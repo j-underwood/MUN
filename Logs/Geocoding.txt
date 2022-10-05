@@ -1,0 +1,141 @@
+Python 3.8.2 (tags/v3.8.2:7b3ab59, Feb 25 2020, 22:45:29) [MSC v.1916 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import requests
+>>> r = requests.get(https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Suitland%2C+MD+20746&benchmark=9&format=json)
+  File "<stdin>", line 1
+    r = requests.get(https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Suitland%2C+MD+20746&benchmark=9&format=json)
+                          ^
+SyntaxError: invalid syntax
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Suitland%2C+MD+20746&benchmark=9&format=json")
+>>> r.
+  File "<stdin>", line 1
+    r.
+     ^
+SyntaxError: invalid syntax
+>>> r
+<Response [200]>
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '9', 'benchmarkName': 'Public_AR_Census2010', 'benchmarkDescription': 'Public Address Ranges - Census 2010 Benchmark', 'isDefault': False}, 'address': {'address': '4600 Silver Hill Rd, Suitland, MD 20746'}}, 'addressMatches': [{'matchedAddress': '4600 Silver Hill Rd, SUITLAND, MD, 20746', 'coordinates': {'x': -76.92691, 'y': 38.846542}, 'tigerLine': {'tigerLineId': '613199520', 'side': 'L'}, 'addressComponents': {'fromAddress': '4600', 'toAddress': '4712', 'preQualifier': '', 'preDirection': '', 'preType': '', 'streetName': 'Silver Hill', 'suffixType': 'Rd', 'suffixDirection': '', 'suffixQualifier': '', 'city': 'SUITLAND', 'state': 'MD', 'zip': '20746'}}]}}
+>>> r.json()["result"]
+{'input': {'benchmark': {'id': '9', 'benchmarkName': 'Public_AR_Census2010', 'benchmarkDescription': 'Public Address Ranges - Census 2010 Benchmark', 'isDefault': False}, 'address': {'address': '4600 Silver Hill Rd, Suitland, MD 20746'}}, 'addressMatches': [{'matchedAddress': '4600 Silver Hill Rd, SUITLAND, MD, 20746', 'coordinates': {'x': -76.92691, 'y': 38.846542}, 'tigerLine': {'tigerLineId': '613199520', 'side': 'L'}, 'addressComponents': {'fromAddress': '4600', 'toAddress': '4712', 'preQualifier': '', 'preDirection': '', 'preType': '', 'streetName': 'Silver Hill', 'suffixType': 'Rd', 'suffixDirection': '', 'suffixQualifier': '', 'city': 'SUITLAND', 'state': 'MD', 'zip': '20746'}}]}
+>>> r = requests.get("https://geocoding.geo.census.org/geocoder/locations/coordinates?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json")
+Traceback (most recent call last):
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 976, in _validate_conn
+    conn.connect()
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connection.py", line 396, in connect
+    _match_hostname(cert, self.assert_hostname or server_hostname)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connection.py", line 406, in _match_hostname
+    match_hostname(cert, asserted_hostname)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\ssl.py", line 416, in match_hostname
+    raise CertificateError("hostname %r "
+ssl.SSLCertVerificationError: ("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'",)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 724, in urlopen
+    retries = retries.increment(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\util\retry.py", line 439, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='geocoding.geo.census.org', port=443): Max retries exceeded with url: /geocoder/locations/coordinates?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json (Caused by SSLError(SSLCertVerificationError("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'")))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='geocoding.geo.census.org', port=443): Max retries exceeded with url: /geocoder/locations/coordinates?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json (Caused by SSLError(SSLCertVerificationError("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'")))
+>>> r = requests.get("https://geocoding.geo.census.org/geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json")
+Traceback (most recent call last):
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 976, in _validate_conn
+    conn.connect()
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connection.py", line 396, in connect
+    _match_hostname(cert, self.assert_hostname or server_hostname)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connection.py", line 406, in _match_hostname
+    match_hostname(cert, asserted_hostname)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\ssl.py", line 416, in match_hostname
+    raise CertificateError("hostname %r "
+ssl.SSLCertVerificationError: ("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'",)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\connectionpool.py", line 724, in urlopen
+    retries = retries.increment(
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\urllib3\util\retry.py", line 439, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='geocoding.geo.census.org', port=443): Max retries exceeded with url: /geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json (Caused by SSLError(SSLCertVerificationError("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'")))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python38-32\lib\site-packages\requests\adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='geocoding.geo.census.org', port=443): Max retries exceeded with url: /geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json (Caused by SSLError(SSLCertVerificationError("hostname 'geocoding.geo.census.org' doesn't match either of '*.parkingcrew.net', 'parkingcrew.net'")))
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=4600+Silver+Hill+Rd&city=Suitland&state=MD&zip=20746&benchmark=Public_AR_Census2010&format=json")
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '9', 'benchmarkName': 'Public_AR_Census2010', 'benchmarkDescription': 'Public Address Ranges - Census 2010 Benchmark', 'isDefault': False}, 'address': {'street': 'Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85743'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': 'Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85743'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=N+Swan+Rd&city=Tucson&state=AZ&zip=85743&benchmark=Public_AR_Census2010&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '9', 'benchmarkName': 'Public_AR_Census2010', 'benchmarkDescription': 'Public Address Ranges - Census 2010 Benchmark', 'isDefault': False}, 'address': {'street': 'N Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85743'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=Swan+Rd&city=Tucson&state=AZ&zip=85711&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': 'Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85711'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=N+Swan+Rd&city=Tucson&state=AZ&zip=85711&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': 'N Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85711'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=3085+N+Swan+Rd&city=Tucson&state=AZ&zip=85711&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': '3085 N Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85711'}}, 'addressMatches': [{'matchedAddress': '3085 N SWAN RD, TUCSON, AZ, 85712', 'coordinates': {'x': -110.892395, 'y': 32.266823}, 'tigerLine': {'tigerLineId': '647303168', 'side': 'L'}, 'addressComponents': {'fromAddress': '3057', 'toAddress': '3119', 'preQualifier': '', 'preDirection': 'N', 'preType': '', 'streetName': 'SWAN', 'suffixType': 'RD', 'suffixDirection': '', 'suffixQualifier': '', 'city': 'TUCSON', 'state': 'AZ', 'zip': '85712'}}]}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=N+Swan+Rd&city=Tucson&state=AZ&zip=85712&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': 'N Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85712'}}, 'addressMatches': []}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/address?street=3085+N+Swan+Rd&city=Tucson&state=AZ&zip=85712&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'street': '3085 N Swan Rd', 'city': 'Tucson', 'state': 'AZ', 'zip': '85712'}}, 'addressMatches': [{'matchedAddress': '3085 N SWAN RD, TUCSON, AZ, 85712', 'coordinates': {'x': -110.892395, 'y': 32.266823}, 'tigerLine': {'tigerLineId': '647303168', 'side': 'L'}, 'addressComponents': {'fromAddress': '3057', 'toAddress': '3119', 'preQualifier': '', 'preDirection': 'N', 'preType': '', 'streetName': 'SWAN', 'suffixType': 'RD', 'suffixDirection': '', 'suffixQualifier': '', 'city': 'TUCSON', 'state': 'AZ', 'zip': '85712'}}]}}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onlineaddress?address=3085+N+Swan+Rd%2C+Tucson%2C+AZ+85712&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{}
+>>> r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=3085+N+Swan+Rd%2C+Tucson%2C+AZ+85712&benchmark=Public_AR_Current&format=json")
+>>> r.json()
+{'result': {'input': {'benchmark': {'id': '4', 'benchmarkName': 'Public_AR_Current', 'benchmarkDescription': 'Public Address Ranges - Current Benchmark', 'isDefault': False}, 'address': {'address': '3085 N Swan Rd, Tucson, AZ 85712'}}, 'addressMatches': [{'matchedAddress': '3085 N SWAN RD, TUCSON, AZ, 85712', 'coordinates': {'x': -110.892395, 'y': 32.266823}, 'tigerLine': {'tigerLineId': '647303168', 'side': 'L'}, 'addressComponents': {'fromAddress': '3057', 'toAddress': '3119', 'preQualifier': '', 'preDirection': 'N', 'preType': '', 'streetName': 'SWAN', 'suffixType': 'RD', 'suffixDirection': '', 'suffixQualifier': '', 'city': 'TUCSON', 'state': 'AZ', 'zip': '85712'}}]}}
+>>> r.json()['result']['addressMatches']
+[{'matchedAddress': '3085 N SWAN RD, TUCSON, AZ, 85712', 'coordinates': {'x': -110.892395, 'y': 32.266823}, 'tigerLine': {'tigerLineId': '647303168', 'side': 'L'}, print("hello")
+hello                                                                                              ction': '', 'suffixQu>>>                                                        2'}}]
+>>> r.json()['result']['addressMatches']['coordinates']
+>>> eback (most recent call last):
+>>> l

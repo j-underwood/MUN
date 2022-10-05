@@ -1,0 +1,59 @@
+RECEIVED: 6/8/2020
+SOLVED: 6/9/2020
+SOLUTION: Utilities.atnd was not functioning properly giving back only the lowest level that was edited, fixed by making full_dictionary variable that keeps the dictionary that gets altered in its complete state, which gets returned. Furthermore, reordered the bottom of Memory, moving the check of whether or not 'users' in the file exists before creating the Memory.User.
+
+FIRST:
+
+Traceback (most recent call last):
+  File "Main.py", line 148, in <module>
+    run()
+  File "Main.py", line 114, in run
+    print(Screen.screen(screen_list))
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Screen.py", line 45, in screen
+    top_left_function = screen_list[1](1)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Weather.py", line 116, in weatherdisplay
+    deleteoldweatherinformation()
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Weather.py", line 298, in deleteoldweatherinformation
+    Memory.mu.rfm(['locations',location_name,'weather','daily',0])
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 185, in rfm
+    memory.remove(accessl)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 73, in remove
+    information = self.retrieve(keys)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 56, in retrieve
+    information = functools.reduce(operator.getitem, keys, self.cmdf)
+TypeError: list indices must be integers or slices, not str
+
+SECOND:
+
+C:\Users\jacob\OneDrive\Desktop\Project\MUN>TypeError: list indices must be integers or slices, not str
+'TypeError:' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\jacob\OneDrive\Desktop\Project\MUN>
+C:\Users\jacob\OneDrive\Desktop\Project\MUN>py Main.py
+User: Jacob
+Traceback (most recent call last):
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 136, in __init__
+    self.name = memory.retrieve(['currentuser'])
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 56, in retrieve
+    information = functools.reduce(operator.getitem, keys, self.cmdf)
+TypeError: list indices must be integers or slices, not str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "Main.py", line 10, in <module>
+    import Screen
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Screen.py", line 5, in <module>
+    import Memory
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 202, in <module>
+    mu = User()
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 139, in __init__
+    self.setcurrentuser(name)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 194, in setcurrentuser
+    memory.store(['currentuser'], name)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Memory.py", line 35, in store
+    self.cmdf = Utilities.atnd(self.cmdf, keys, information)
+  File "C:\Users\jacob\OneDrive\Desktop\Project\MUN\Utilities.py", line 21, in atnd
+    dictionary[keys[-1]] = information
+TypeError: list indices must be integers or slices, not str

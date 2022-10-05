@@ -1,0 +1,783 @@
+import requests
+import subprocess
+import random
+import functools
+import operator
+import datetime
+
+#Sets the correct width and height of the console
+subprocess.run(["mode","con","cols=101","lines=36"], shell=True)
+
+#icon dictionary
+#icond = {}
+
+#master dictionary file location
+mdfl = "C:\\Users\\jacob\\OneDrive\\Desktop\\Project\\MDF.txt"
+
+#backup for MDF erase
+backup = {}
+
+alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+numbers = list(range(0,10))
+
+print("\n"*17)
+print("─"*101)
+#print("\n"*17)
+
+class Module:
+
+    def __init__(self, size):
+        self.size = size
+        if size == 0:
+            self.width = 100
+            self.height = 17
+        elif size == 1:
+            # TODO: continue here
+            self.width = 0
+            self.height = 0
+
+    def display(self, coded_pixel_string):
+        pixel_list = [""]
+        line = 0
+        #index
+        for i, coded_pixel in enumerate(coded_pixel_string):
+            if i % self.width and not i == 0 and not size == 0:
+                pixel_list.append("")
+                line += 1
+
+            if coded_pixel == "0":
+                pixel_list[line] += " "
+            elif coded_pixel == "1":
+                pixel_list[line] += "."
+            #elif coded_pixel == "2"
+
+class Icon:
+
+    #symbol dictionary
+    #Boxing symbols use the Q-W-E-A-D-Z-X-C square on Qwerty (A=D, W=X)
+    symd = {"0": " ", "1": "░", "2": "▒", "3": "▓", "s": "●", "m": "○", "/": "/", "q": "┌", "w": "─", "e": "┐", "a": "│", "z": "└", "c": "┘"}
+
+    def __init__(self, icon):
+        self.icon = icon
+        #Icons should be rectangles
+        self.width = len(icon.split('/')[0])
+        self.height = len(icon.split('/'))
+
+    def generate(self):
+        generated_icon = ""
+        for pixel in self.icon:
+            #generated pixel
+            try:
+                gp = self.symd[pixel]
+            except:
+                gp = "?"
+            generated_icon += gp
+        return generated_icon
+
+    def gsplit(self):
+        #generated split
+        generated_icon = self.generate()
+        #generated icon
+        gi_split = generated_icon.split("/")
+        return gi_split
+
+    def box(self):
+        icon = "q" + ("w" * self.width) + "e/"
+        #index
+        for row in self.icon.split('/'):
+            icon += "a" + row + "a/"
+        icon += "z" + ("w" * self.width) + "c"
+        return Icon(icon)
+
+class MDF:
+    #master dictionary file
+
+    def __init__(self, location):
+        self.location = location
+
+    def store(self, keys, information):
+        '''
+        Writes the information to the MDF using the key(s) that were provided in a list
+        '''
+        #Adds the information to the master dictionary
+        self.cmdf = atnd(self.cmdf, keys, information)
+        #Converts the dictionary back to a string
+        #string cmdf
+        scmdf = str(self.cmdf)
+        #Remove the old information
+        self.mdf.truncate()
+        #Write the new information
+        self.mdf.write(scmdf)
+        #Return back to the beginning of the file after reading it
+        self.mdf.seek(0)
+
+    def retrieve(self, keys):
+        '''
+        Reads the specified key in the MDF, returning the information
+        '''
+        #Attempts to get the information at the key
+        #try:
+        information = functools.reduce(operator.getitem, keys, self.cmdf)
+        #except:
+            #print(f"Error in retrieve method of class MDF, no such keys '{keys}' exist.")
+            #return "Error in MDF retrieve"
+        return information
+
+    def remove(self, keys):
+        '''
+        Removes the specific key in the MDF, returning the information at the key in case it is needed
+        '''
+        #Attempts to get the information at the key and remove it
+        #try:
+        #Get the information
+        information = self.retrieve(keys)
+        #Remove the information
+        self.cmdf = rfnd(self.cmdf, keys)
+        #Converts the dictionary back to a string
+        #string cmdf
+        scmdf = str(self.cmdf)
+        #Remove the old information
+        self.mdf.truncate()
+        #Write the new information
+        self.mdf.write(scmdf)
+        #Return back to the beginning of the file after reading it
+        self.mdf.seek(0)
+        #except:
+            #print(f"Error in the remove method of class MDF, no such keys '{keys}' exist.")
+            #return "Error in MDF remove"
+        return information
+
+    def erase(self):
+        '''
+        Erases the MDF and replaces it with an empty dictionary
+        Warning: this removes all memory information!
+        '''
+        global backup
+        #Truncate the entirety of the file
+        self.mdf.truncate()
+        #Write the new empty dictionary
+        self.mdf.write("{}")
+        #Return back to the beginning of the filer after writing to it
+        self.mdf.seek(0)
+        #Backup cmdf in case it was on accident
+        backup = self.cmdf
+        #Update cmdf
+        self.cmdf = {}
+
+    def close(self):
+        '''
+        Closes the MDF
+        '''
+        self.mdf.close()
+
+    def open(self):
+        '''
+        Access the MDF by opening it and getting the dictionary
+        '''
+        try:
+            self.mdf = open(self.location, "r+")
+        except:
+            print(f"Error in open method of class MDF, file '{self.location}' does not exist.")
+        else:
+            #content mdf
+            self.cmdf = self.mdf.read()
+            #Return to the beginning of the file after reading it
+            self.mdf.seek(0)
+            if self.cmdf == '':
+                print("The file read by MDF open is empty, it should at least have a blank dictionary {}.")
+                self.cmdf = "{}"
+            #Converts the string to a dictionary
+            self.cmdf = eval(self.cmdf)
+
+class User:
+
+    def __init__(self, name):
+        self.name = name
+
+    def lfm(self, noi):
+        #load from memory
+        #name of information
+        accessl = ['users', self.name]
+        accessl += noi
+        return memory.retrieve(accessl)
+
+    def atm(self, noi, information):
+        #add to memory
+        #name of information
+        accessl = ['users', self.name]
+        accessl += noi
+        memory.store(accessl, information)
+
+    def rfm(self, noi):
+        #remove from memory
+        #name of information
+        accessl = ['users', self.name]
+        accessl += noi
+        memory.remove(accessl)
+
+    def zdfatm(self, dictionary):
+        #MAY DELETE
+        #zip dictionary for add to memory
+        for key, information in dictionary.items():
+            self.atm()
+
+def weatherdisplay(location_name=None):
+    if not location_name:
+        location_name = getcurrentlocation()
+
+    weather = getweathercache(location_name)
+    daily = weather['daily']
+    hourly = weather['hourly']
+
+    deleteoldweatherinformation()
+
+    display_left = ""
+
+    weather_name_icon_conversion = {'Sunny': 'cld', 'Clear': 'cln', 'Mostly Clear': 'mln'}
+
+    daily_weather_name_list = [centerstring(daily[index]['name'], 15)[:16] for index in range(0,4)]
+    daily_weather_icon_list = [createicon(weather_name_icon_conversion[daily[index]['shortForecast']]).box().gsplit() for index in range(0,4)]
+    daily_weather_information_list = [conformtolistlength(centerlist(divideup(daily[index]['detailedForecast'], 13), 15), 9, 15)[:118] for index in range(0,4)]
+
+    for name in daily_weather_name_list:
+        display_left += name
+
+    display_left += "/"
+
+    for index in range(0,7):
+        for icon_list in daily_weather_icon_list:
+            display_left += icon_list[index]
+        display_left += "/"
+
+    for index in range(0,9):
+        for information_list in daily_weather_information_list:
+            display_left += information_list[index]
+        display_left += "/"
+
+    display_right = " Hour" + (" " * 8) + "Forecast" + (" " * 8) + "Temperature /"
+
+    hour_list = ["  " + centerstring(str(index), 2) + "  " for index in range(0,16)]
+    hourly_weather_forecast_list = [centerstringatindex(hourly[index]['shortForecast'], 25, 10)[:26] for index in range(0,16)]
+    hourly_weather_temperature_list = ["  " + centerstring(str(hourly[index]['temperature']), 3) + "     " for index in range(0,16)]
+
+    for index in range(0,16):
+        display_right += hour_list[index]
+        display_right += hourly_weather_forecast_list[index]
+        display_right += hourly_weather_temperature_list[index]
+        display_right += "/"
+
+    #Removing the last character ("/") or preventing it using an if statement in for 262 and for 287?
+
+    display_left = display_left[:-1]
+    dispaly_right = display_right[:-1]
+
+    display = ""
+
+    for index in range(0,17):
+        display += display_left.split("/")[index]
+        display += display_right.split("/")[index]
+
+    return display
+
+def deleteoldweatherinformation(location_name=None):
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+
+    weather = getweathercache(location_name)
+    daily = weather['daily']
+    hourly = weather['hourly']
+    timezone = gettimezone(location_name)
+    now = datetime.datetime.now(timezone)
+
+    current_day = findoffset(now, daily)
+    current_hour = findoffset(now, hourly)
+
+    for _ in range(0,current_day):
+        mu.rfm(['locations',location_name,'weather','daily',0])
+
+    for _ in range(0,current_hour):
+        mu.rfm(['locations',location_name,'weather','hourly',0])
+
+def findoffset(now, weather_information):
+    for time_period,time_period_weather in enumerate(weather_information):
+        start_time = time_period_weather['startTime']
+        end_time = time_period_weather['endTime']
+        #Convert to datetime objects
+        start_time = datetime.datetime.fromisoformat(start_time)
+        end_time = datetime.datetime.fromisoformat(end_time)
+        if start_time < now < end_time:
+            return time_period
+
+def divideup(string, size, advanced=True):
+    '''
+    Divides the inputted string into a list with each entry being equal to (or at the end, if needed, less than) the given size
+    '''
+    if not advanced:
+        divided = ['']
+        counter = 0
+        index = 0
+        for character in string:
+            divided[index] += character
+            counter += 1
+            if counter == size:
+                counter = 0
+                index += 1
+                divided.append('')
+        return divided
+    else:
+        #Could technically be shorter
+        adjusted_string = ''
+        for word in string.split(' '):
+            while len(word.split(' ')[-1]) > size:
+                last_part = sir(word.split(' ')[-1], size-1, '- ', push=True)
+                word = " ".join(word.split(' ')[:-1]) + ' ' + last_part
+            adjusted_string += word + ' '
+        adjusted_string = adjusted_string[:-1]
+        divided = ['']
+        word_counter = 0
+        index_adjustment = 0
+        for index in range(0,len(adjusted_string.split(' '))):
+            if not word_counter:
+                #Negative one to adjust for no space at the end
+                character_total = -1
+                for word in adjusted_string.split(' ')[index:]:
+                    character_total += len(word) + 1
+                    if character_total <= size:
+                        divided[index-index_adjustment] += word + ' '
+                        word_counter += 1
+                    else:
+                        divided[index-index_adjustment] = divided[index-index_adjustment][:-1]
+                        break
+                divided.append('')
+            else:
+                index_adjustment += 1
+            word_counter -= 1
+        divided = divided[:-1]
+        divided[len(divided)-1] = divided[len(divided)-1][:-1]
+        return divided
+
+def centerlist(series, size):
+    '''
+    Centers the every entry in a list to conform to a certain size, often used with divideup
+    '''
+    #Could technically be shorter
+    #last entry
+    for index in range(0,len(series)):
+        series[index] = centerstring(series[index],size)
+    return series
+
+def centerstring(string, size):
+    '''
+    Centers the string to conform to a certain size
+    '''
+    alternate = True
+    while len(string) < size:
+        if alternate:
+            string += ' '
+            alternate = False
+        else:
+            string = ' ' + string
+            alternate = True
+    return string
+
+def centerstringatindex(string, size, index):
+    string_middle_index = int((len(string)+1)/2)-1
+    #string_middle_index is also equal to the amount of characters in the string before the string_middle_index
+    centered_string = ' ' * (index-string_middle_index)
+    centered_string += string
+    centered_string += ' ' * (size-len(centered_string))
+    return centered_string
+    #10
+
+def conformtolistlength(series, height, width):
+    '''
+    Makes a list conform to a certain height by adding empty (spaces) entries of a certain width to the end
+    '''
+    while not len(series) == height:
+        series.append(' ' * width)
+    return series
+
+def askaddress():
+    '''
+    Asks the user their address information and compiles a dictionary of that information, which the function returns
+    '''
+    while True:
+        street_name = input("Street name (#### Direction Name Type): ")
+        if street_name.count(" ") in [2, 3]:
+            try:
+                int(street_name[:4])
+            except:
+                continue
+            else:
+                break
+    while True:
+        city = input("City (Name): ")
+        #need to repeat
+        ntr = False
+        for character in city:
+            if not character.lower() in alphabet:
+                ntr = True
+                break
+        if ntr:
+            continue
+        else:
+            break
+    while True:
+        state = input("State (AA): ")
+        if len(state) == 2:
+            if state[0] in str(alphabet).upper() and state[1] in str(alphabet).upper():
+                break
+    while True:
+        zip_code = input ("Zip code (#####): ")
+        if len(zip_code) == 5:
+            try:
+                int(zip_code)
+            except:
+                continue
+            else:
+                break
+    return {'Street name': street_name, 'City': city, 'State': state, 'Zip code': zip_code}
+
+def createicon(id):
+    #c: completely, m: mostly, p: partly
+    #l: clear, o: cloudy
+    #d: day, n: night
+    if id == 'cld':
+        return Icon(curvecg(cloudgenerator(5, 13, 19, "s")))
+    elif id == 'mld':
+        return Icon(curvecg(cloudgenerator(5, 13, 39, "s")))
+    elif id == 'pld':
+        return Icon(curvecg(cloudgenerator(5, 13, 59, "s")))
+    elif id == 'pod':
+        return Icon(curvecg(cloudgenerator(5, 13, 79, "s")))
+    elif id == 'mod':
+        return Icon(curvecg(cloudgenerator(5, 13, 99, "s")))
+    elif id == 'cln':
+        return Icon(curvecg(cloudgenerator(5, 13, 19, "m")))
+    elif id == 'mln':
+        return Icon(curvecg(cloudgenerator(5, 13, 39, "m")))
+    elif id == 'pln':
+        return Icon(curvecg(cloudgenerator(5, 13, 59, "m")))
+    elif id == 'pon':
+        return Icon(curvecg(cloudgenerator(5, 13, 79, "m")))
+    elif id == 'mon':
+        return Icon(curvecg(cloudgenerator(5, 13, 99, "m")))
+
+def cloudgenerator(height, length, level, extra=False):
+    '''
+    Returns a random cloud, used for icon generation, with a possible extra symbol mixed in (like a sun or moon)
+    '''
+    #Level is a number between and including 1 and 99 (though usually would be at least 75)
+    cloud = ""
+    for _ in range(height):
+        for __ in range(length):
+            random_int = random.randint(0, level)
+            #cloud pixel
+            cp = random_int/25
+            #Remove the decimals
+            cp = int(cp)
+            cloud += str(cp)
+        cloud += "/"
+    cloud = cloud[0:len(cloud)-1]
+    if extra:
+        #random index
+        ri = random.randrange(1, len(cloud))
+        while "/" in cloud[ri-1:ri+2]:
+            ri = random.randrange(1, len(cloud))
+        cloud = sir(cloud, ri, extra)
+        cloud = sir(cloud, ri-1, "0")
+        cloud = sir(cloud, ri+1, "0")
+    return cloud
+
+def curvecg(cg):
+    '''
+    Curves a generated cloud, specifically for (height = 5, length = 13) though it could be used for other sizes
+    '''
+    #cg: cloud generator
+    #split cloud generator
+    scg = cg.split("/")
+    #last index (for the whole list)
+    scgli = len(scg) - 1
+    #index to use
+    itu = 0
+    #character whitelist
+    cwl = ["0", "1", "2", "3"]
+    for _ in range(2):
+        scg[itu] = sir(scg[itu], 0, "0", cwl)
+        scg[itu] = sir(scg[itu], 1, "0", cwl)
+        scg[itu] = sir(scg[itu], len(scg[itu])-1, "0", cwl)
+        scg[itu] = sir(scg[itu], len(scg[itu])-2, "0", cwl)
+        itu = scgli
+    itu = 1
+    for _ in range(2):
+        scg[itu] = sir(scg[itu], 0, "0", cwl)
+        scg[itu] = sir(scg[itu], len(scg[itu])-1, "0", cwl)
+        itu = scgli - 1
+    return "/".join(scg)
+
+def addaddress(location_name=None):
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    location_address = askaddress()
+    mu.atm(['locations',location_name,'address'], location_address)
+
+def updatecurrentlocation():
+    global mu
+    current_location = input("Where is your current location? ")
+    mu.atm(['currentlocation'], current_location)
+
+def getcurrentlocation():
+    global mu
+    current_location = mu.lfm(['currentlocation'])
+    return current_location
+
+def getcoordinates(location_name=None):
+    '''
+    Gets the coordinates for the location name provided, then stores it in memory by location name
+    '''
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    try:
+        street_name = mu.lfm(['locations',location_name,'address','Street name']).replace(' ', '+')
+        city = mu.lfm(['locations',location_name,'address','City'])
+        state = mu.lfm(['locations',location_name,'address','State'])
+        zip_code = mu.lfm(['locations',location_name,'address','Zip code'])
+    except:
+        print("Error in getcoordinates, with getting the address information.")
+        return
+    #comma plus
+    cp = "%2C+"
+    #plus
+    p = "+"
+    #Formatted address
+    address = street_name + cp + city + cp + state + p + zip_code
+
+    try:
+        #API link using Public AR and the 2010 Census formatted with json
+        location = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address="+address+"&benchmark=Public_AR_Census2010&format=json")
+        #Get the coordinates from location
+        coordinates = location.json()['result']['addressMatches'][0]['coordinates']
+        #coordinate dictionary
+        cd = {'x':coordinates['x'],'y':coordinates['y']}
+    except:
+        print("Error in getcoordinates, with accessing the API.")
+        return
+
+    #Store the information
+    mu.atm(['locations',location_name,'coordinates'], cd)
+    return cd
+
+def getcoordinatescache(location_name=None):
+    '''
+    Returns coordinate information from user memory
+    '''
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    try:
+        coordinates = mu.lfm(['locations',location_name,'coordinates'])
+        return coordinates
+    except:
+        print(f"Error in getcoordinatescache, no such location name {location_name} in memory.")
+        return
+
+def getweather(location_name=None):
+    '''
+    Returns a dictionary containing hourly and daily weather in a dictionary
+    '''
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    #coordinate dictionary
+    cd = getcoordinatescache(location_name)
+    x = cd['x']
+    y = cd['y']
+
+    #try:
+    #API link inputting the previously gotten coordinates
+    weather_location = requests.get("https://api.weather.gov/points/"+str(y)+","+str(x))
+    #Gets the link for the hourly weather based on the coordinates that provides the actual weather information
+    weather_hourly_link = weather_location.json()['properties']['forecastHourly']
+    #Gets the link for the daily weather based on the coordinates that provides the actual weather information
+    weather_daily_link = weather_location.json()['properties']['forecast']
+
+    #API link received from weather.gov for hourly weather
+    weather_hourly_full = requests.get(weather_hourly_link)
+    #Get the hourly weather list from the json, starting hour retrieve using [0], second hour with [1], etc.
+    weather_hourly = weather_hourly_full.json()["properties"]["periods"]
+
+    #API link received from weather.gov for daily weather
+    weather_daily_full = requests.get(weather_daily_link)
+    #Get the daily weather list from the json, starting day or night retrieve using [0], second period with [1], etc.
+    weather_daily = weather_daily_full.json()['properties']['periods']
+
+    weather_dictionary = {"hourly": weather_hourly, "daily": weather_daily}
+
+    #Cache the information
+    mu.atm(['locations',location_name,'weather'], weather_dictionary)
+    #except KeyError:
+        #print("KeyError in getweather.")
+        #Old behavior was to return the cached weather
+        #weather_dictionary = getweathercache(location_name)
+    #except:
+        #print("Other error in getweather.")
+
+    return weather_dictionary
+
+def getweathercache(location_name=None):
+    '''
+    Returns weather information from user memory
+    '''
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    #try:
+    weather_dictionary = mu.lfm(['locations',location_name,'weather'])
+    return weather_dictionary
+    #except:
+        #print(f"Error in getweathercache, no such location name {location_name} in memory.")
+
+def gettimezone(location_name=None):
+    #Possible update: the lists that have the actual weather contain times with the offset
+    global mu
+    if not location_name:
+        location_name = getcurrentlocation()
+    #coordinate dictionary
+    cd = getcoordinatescache(location_name)
+    x = cd['x']
+    y = cd['y']
+
+    #API link inputting the previously gotten coordinates
+    weather_location = requests.get("https://api.weather.gov/points/"+str(y)+","+str(x))
+    #Get the timezone name
+    timezone_name = weather_location.json()['properties']['timeZone']
+    #Checks if this timezone has a corresponding memory entry to give the offset and three letter name
+    try:
+        timezone_dictionary = memory.retrieve(['timezoneconversion',timezone_name])
+    except:
+        while True:
+            try:
+                offset = int(input(f'What is the offset of {timezone_name} (+#/-#)? '))
+            except:
+                print("That is not a valid integer value.")
+            else:
+                break
+        while True:
+            timezone_abbreviation = input(f'What is the abbreviation for the timezone {timezone_name} (AAA)? ')
+            if len(timezone_abbreviation) == 3:
+                #need to repeat
+                ntr = False
+                for character in timezone_abbreviation:
+                    if not character.lower() in alphabet:
+                        ntr = True
+                        break
+                if ntr:
+                    continue
+                else:
+                    break
+        timezone_dictionary = {'offset': offset, 'timezone abbreviation': timezone_abbreviation}
+        memory.store(['timezoneconversion',timezone_name], timezone_dictionary)
+
+    timezone = datetime.timezone(datetime.timedelta(hours=timezone_dictionary['offset']), timezone_dictionary['timezone abbreviation'])
+
+    return timezone
+
+def atnd(dictionary, keys, information):
+    #add to nested dictionary
+    '''
+    Changes a nested dictionary, using all but the last key to get to the dictionary one wants to change, then using the final key to add the information to the dictionary
+    '''
+    #*This function could technically be shorter
+    #information to store
+    its = information
+    #key index
+    #Runs through each key index in the keys list
+    for ki in range(0, len(keys)):
+        #current dictionary in processing
+        #Gets the lowest dictionary, then the second lowest in the next run, then the third, etc.
+        #cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+        cdip = dictionary
+        for key in keys[:-1-ki]:
+            try:
+                cdip = cdip[key]
+            except:
+                cdip = {}
+        #In the first run, this uses the last key in the keys list to set the given information in the nested dictionary, after that it loops through the higher dictionaries, replacing them with updated nested dictionaries
+        if not type(cdip) == type({}):
+            #original behavior: cdip = {}
+            return dictionary
+        cdip[keys[-ki-1]] = its
+        #The new information that needs to be stored in the next run through is the lower dictionary
+        its = cdip
+    return cdip
+
+def rfnd(dictionary, keys):
+    #remove from nested dictionary
+    '''
+    Removes information from a nested dictionary, using all but the last key to get to the dictionary one wants to change, then using the final key to remove the information from the dictionary
+    '''
+    #*This function could technically be shorter
+    #See atnd for variable names and function information
+    its = {}
+    for ki in range(0, len(keys)):
+        cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+        if ki == 0:
+            #Deletes the information at the last key
+            del cdip[keys[-1]]
+        else:
+            cdip[keys[-ki-1]] = its
+        its = cdip
+    return cdip
+
+def sir(string, index, character, whitelist=[], push=False):
+    #string index replace
+    '''
+    Replaces the character at the given index of the string, only characters provided in the (optional) whitelist
+    '''
+    try:
+        character = str(character)
+        index = int(index)
+    except:
+        print(f"Error in sir function, character '{character}' can not be converted to a string or index '{index}' could not be converted to an integer.")
+        return "Error in sir"
+    else:
+        while index < 0:
+            index += len(string)
+        while index >= len(string):
+            index -= len(string)
+        if string[index] in whitelist or not whitelist:
+            if not push:
+                offset = 1
+            else:
+                offset = 0
+            string = string[:index] + character + string[index+offset:]
+        return string
+
+def keydictionary(dictionary):
+    '''
+    Takes a dictionary and outputs a dictionary of all the keys within each nested dictionary
+    '''
+    #overview
+    ov = {}
+    for key in dictionary.keys():
+        if type(dictionary[key]) == type({}):
+            ov[key] = keydictionary(dictionary[key])
+        else:
+            ov[key] = {}
+    return ov
+
+#Set up memory
+memory = MDF(mdfl)
+memory.open()
+
+#Set up active user
+#main user
+mu = User('Jacob')
+
+print(weatherdisplay())
+
+if __name__ == "__main__":
+    pass

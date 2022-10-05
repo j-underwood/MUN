@@ -1,0 +1,841 @@
+/MDF
+def simdf(key, information):
+    #store in master dictionary file
+    '''
+    Writes the information to the master dictionary file using the key provided
+    '''
+    mdf, cmdf = amdf()
+    #Adds the information to the master dictionary
+    cmdf[key] = information
+    #Converts the dictionary back to a string
+    cmdf = str(cmdf)
+    #Remove the old information
+    mdf.truncate()
+    #Write the new information
+    mdf.write(cmdf)
+    #Close the file
+    mdf.close()
+
+def gimdf(key):
+    #get in master dictionary file
+    '''
+    Reads the specified key in the master dictionary file, returning the information
+    '''
+    mdf, cmdf = amdf()
+    #Attempts to get the information at the key
+    try:
+        information = cmdf[key]
+    except:
+        print(f"Error in gimdf function, no such key '{key}' exists.")
+        return "Error gimdf"
+    finally:
+        #Close the file, even if an error occurs
+        mdf.close()
+    return information
+
+def rimdf(key):
+    #remove in master dictionary file
+    pass
+
+def emdf():
+    #erase master dictionary file
+    '''
+    Erases the master dictionary file and replaces it with an empty dictionary if the correct (insecure) password is inputted
+    '''
+    mdf, cmdf = amdf()
+    #Truncate the entirety of the file
+    mdf.truncate()
+    #Write the new empty dictionary
+    mdf.write("{}")
+    #Close the file
+    mdf.close()
+
+def amdf():
+    #access master dictionary file
+    '''
+    Access the MDF by opening it and getting the dictionary, returning the file and the dictionary in a tuple (usually to be used in simdf and rimdf)
+    '''
+    global mdfl
+    try:
+        mdf = open(mdfl, "r+")
+    except:
+        print(f"Error in amdf function, file '{mdfl}' does not exist.")
+        return "Error amdf"
+    #content mdf
+    cmdf = mdf.read()
+    #Return to the beginning of the file after reading it
+    mdf.seek(0)
+    if cmdf == '':
+        print("The file read by simdf is empty, it should at least have a blank dictionary {}.")
+        cmdf = "{}"
+    #Converts the string to a dictionary
+    cmdf = eval(cmdf)
+    return (mdf, cmdf)
+
+
+
+/Strange output relating to dictionaries
+def atnd(dictionary, keys, information):
+    #add to nested dictionary
+    #key index
+    for ki in range(0, len(keys)):
+        print(ki)
+        #current dictionary in processing
+        cdip = dictionary
+        cdip = functools.reduce(operator.getitem, keys[:-1-ki], cdip)
+        cdip[keys[-ki]] = information
+        information = cdip
+    return information
+
+/Glitch relating to nested dictionaries?
+def atnd(dictionary, keys, information):
+    #add to nested dictionary
+    #information to store
+    its = information
+    #key index
+    #Runs through each key index in the keys list
+    for ki in range(0, len(keys)):
+        print(f"ki: {ki}")
+        print(f"its: {its}")
+        #current dictionary in processing
+        #Gets the lowest dictionary, then the second lowest in the next run, then the third, etc.
+        print(dictionary)
+        cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+        print(dictionary)
+        print(f"cdip: {cdip}")
+        #In the first run, this uses the last key in the keys list to set the given information in the nested dictionary, after that it loops through the higher dictionaries, replacing them with updated nested dictionaries
+        cdip[keys[-ki-1]] = its
+        return dictionary
+        print(dictionary)
+        print(f"cdip: {cdip}")
+        #The new information that needs to be stored in the next run through is the lower dictionary
+        its = cdip
+        print(f"its: {its}")
+    return cdip
+CMD LINE:
+m = {'a':{'b':{'c':{'d':30}}}}
+y = ['a','b','c','test']
+n = Weather.atnd(m, y, 'hello')
+
+/Glitch file
+def a(dictionary, keys, information):
+    its = information
+    cdip = dictionary
+    for key in keys[:-1]:
+            cdip = cdip[key]
+    print(cdip)
+    print(dictionary)
+    cdip[keys[-1]] = its
+    return dictionary
+
+def b(dictionary, keys, information):
+    for key in keys[:-1]:
+            dictionary = dictionary[key]
+    print(dictionary)
+    dictionary[keys[-1]] = information
+    return dictionary
+
+/Alternative to cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+cdip = dictionary
+for key in keys[:-1-ki]:
+    cdip = cdip[key]
+
+/Weather display old conversion
+daily_weather_name_list = [centerstring(item, 15)[:16] for item in daily_weather_name_list]
+daily_weather_icon_list = [item.box().gsplit() for item in daily_weather_icon_list]
+daily_weather_information_list = [conformtolistlength(centerlist(divideup(item, 13), 15), 9, 15)[:118] for item in daily_weather_information_list]
+
+/Old for loops in weather display
+for index in range(0,len(daily_weather_name_list)):
+    daily_weather_name_list[index] = centerlist([daily_weather_name_list[index]], 15)[0][:16]
+for index in range(0,len(daily_weather_icon_list)):
+    daily_weather_icon_list[index] = daily_weather_icon_list[index].box().gsplit()
+for index in range(0,len(daily_weather_information_list)):
+    daily_weather_information_list[index] = conformtolistlength(centerlist(divideup(daily_weather_information_list[index], 13), 15), 9, 15)[:118]
+
+/Old Module class from Main
+class Module:
+
+    def __init__(self, size):
+        self.size = size
+        if size == 0:
+            self.width = 100
+            self.height = 17
+        elif size == 1:
+            # TODO: continue here
+            self.width = 0
+            self.height = 0
+
+    def display(self, coded_pixel_string):
+        pixel_list = [""]
+        line = 0
+        #index
+        for i, coded_pixel in enumerate(coded_pixel_string):
+            if i % self.width and not i == 0 and not size == 0:
+                pixel_list.append("")
+                line += 1
+
+            if coded_pixel == "0":
+                pixel_list[line] += " "
+            elif coded_pixel == "1":
+                pixel_list[line] += "."
+            #elif coded_pixel == "2"
+
+/Attempt at preventing None types early in the list
+if not screen_list[0]:
+    command[2] = 0
+elif not screen_list[1]:
+    command[2] = 1
+elif not screen_list[2]:
+    command[2] = 2
+elif not screen_list[3]:
+    command[2] = 3
+if screen_list[0] and screen_list[1] and screen_list[2] and screen_list[3] and command[1] == 'None':
+    command[2] = 3
+elif not screen_list[3] and command[1] == 'None':
+    command[2] = 2
+elif not screen_list[2] and command[1] == 'None':
+    command[2] = 1
+elif not screen_list[1] and command[1] == 'None':
+    command[2] = 0
+
+/Original intention of composeshortforecast function
+if weather_list['isDaytime']:
+    return "Day " + weather_list['shortForecast']
+else:
+    return "Night" + weather_list['shortForecast']
+
+/Original Commands.cal
+try:
+    for index in range(amount):
+        arguments[index]
+except:
+    error(arguments, f"Not enough arguments ({amount}) were provided")
+    return True
+else:
+    return False
+
+/Original atnd
+def atnd(dictionary, keys, information):
+    #add to nested dictionary
+    """
+    Changes a nested dictionary, using all but the last key to get to the dictionary one wants to change, then using the final key to add the information to the dictionary.
+
+    keys: list
+
+    return: dictionary
+
+    ***Can be reformated
+    """
+    #information to store
+    its = information
+    #key index
+    #Runs through each key index in the keys list
+    for ki in range(0, len(keys)):
+        #current dictionary in processing
+        #Gets the lowest dictionary, then the second lowest in the next run, then the third, etc.
+        #cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+        cdip = dictionary
+        for key in keys[:-1-ki]:
+            try:
+                cdip = cdip[key]
+            except:
+                cdip = {}
+        #In the first run, this uses the last key in the keys list to set the given information in the nested dictionary, after that it loops through the higher dictionaries, replacing them with updated nested dictionaries
+        if not type(cdip) == type({}):
+            #original behavior: cdip = {}
+            return dictionary
+        cdip[keys[-ki-1]] = its
+        #The new information that needs to be stored in the next run through is the lower dictionary
+        its = cdip
+    return cdip
+
+/Original rfnd
+def rfnd(dictionary, keys):
+    #remove from nested dictionary
+    """
+    Removes information from a nested dictionary, using all but the last key to get to the dictionary one wants to change, then using the final key to remove the information from the dictionary.
+
+    keys: list
+
+    return: dictionary
+
+    ***Can be reformated
+    """
+    #See atnd for variable names and function information
+    its = {}
+    for ki in range(0, len(keys)):
+        cdip = functools.reduce(operator.getitem, keys[:-1-ki], dictionary)
+        if ki == 0:
+            #Deletes the information at the last key
+            del cdip[keys[-1]]
+        else:
+            cdip[keys[-ki-1]] = its
+        its = cdip
+    return cdip
+
+/Unnecessary attempt at rounding up (instead: int(x) + 1)
+(size - (len(string) % size) + size) / size
+
+/Attempt at divideup using a different method, separating the string into a list while simultaneously pushing characters out further for the next section
+divided = []
+string = list(string)
+#The following divides the len(string) by size, rounding up
+print(int(len(string)/size)+1)
+for section in range(int(len(string)/size)+1):
+    #Current sub-section: string[size*section:size*section+size]
+    if not (string[size*section+size-1] == ' ' or string[size*section+size] == ' '):
+        string.insert(size*section+size-1, '-')
+    divided.append('')
+    for character in string[size*section:size*section+size]:
+        divided[section] += character
+    print(int(len(string)/size)+1)
+return divided
+#idea: take sections by size of the string, if a word does not fit, checking the side that was cut off is a word, add a dash and shift the characters down, making
+#index adjustments similar to below
+#string: 'this is a test'
+#size: 3
+#thi -> th-
+#i + s
+#is + a
+# tes ->  te-
+#st +
+
+/Original centerstring function, transition to str.center()
+def centerstring(string, size):
+    """
+    Centers the string to conform to a certain size.
+
+    size: int
+
+    return: string
+    """
+    alternate = True
+    while len(string) < size:
+        if alternate:
+            string += ' '
+            alternate = False
+        else:
+            string = ' ' + string
+            alternate = True
+    return string
+
+/Original weather.askaddress function
+def askaddress():
+    """
+    Asks the user their address information and compiles a dictionary of that information, while imposing restraints on what the user can enter.
+
+    return: dictionary ('Street name', 'City', 'Zip code', 'State')
+
+    ***This, as with some other similar functions, can be changed to use simpler string function instead of an alphabet list.
+    """
+    global alphabet
+    while True:
+        street_name = input("Street name (#### Direction Name Type): ")
+        if street_name.count(" ") in [2, 3]:
+            try:
+                int(street_name[:4])
+            except:
+                continue
+            else:
+                break
+    while True:
+        city = input("City (Name): ")
+        #need to repeat
+        ntr = False
+        for character in city:
+            if not character.lower() in alphabet:
+                ntr = True
+                break
+        if ntr:
+            continue
+        else:
+            break
+    while True:
+        state = input("State (AA): ")
+        if len(state) == 2:
+            if state[0] in str(alphabet).upper() and state[1] in str(alphabet).upper():
+                break
+    while True:
+        zip_code = input ("Zip code (#####): ")
+        if len(zip_code) == 5:
+            try:
+                int(zip_code)
+            except:
+                continue
+            else:
+                break
+    return {'Street name': street_name, 'City': city, 'State': state, 'Zip code': zip_code}
+
+/Original changecs function from Screen
+#AT TOP
+#current symbol
+cs = ''
+#ELSEWHERE
+def changecs(symbol_name=None):
+    """
+    The character used before the user input, in the input function in the Main module.
+
+    symbol_name: str
+
+    *Accesses the global cs function, setting it to different special symbols.
+    ***Needs more use cases.
+    """
+    global cs
+
+    #Open memory? Remove different options between arrow because not useful?
+
+    if symbol_name == 'l':
+        #loading
+        cs = Memory.memory.retrieve(['currentuser']) + '←'
+    else:
+        #Default, if nothing is inputted
+        cs = Memory.mu.name + '→'
+
+/Old Bamboo
+import random
+
+import Utilities
+
+def createplant(height, width):
+    base = ''
+    branches = [[],[]]
+    for side in range(2):
+        #The maximum number should be height/2-1 (to adjust for there being no branches on the top or bottom), which is accounted for by randrange instead of randint
+        #The random statement in the following is for the amount of branches on the side of either left or right
+        for branch_index in range(random.randrange(1,int(height/2))):
+            #Would be height-2 (to adjust for there being no branches at the top and for index offset) as the maximum, but randrange makes only -1 necessary
+            #The random statement in the following is for the location of the branch_index
+            possible_location = random.randrange(1,height-1)
+            #need to break
+            ntb = False
+            attempted_locations = []
+            while True:
+                #print(f'here: {possible_location} {branch_index}')
+                #need to continue
+                ntc = False
+                for created_branch in branches[side]:
+                    if possible_location in [created_branch,created_branch-1,created_branch+1]:
+                        ntc = True
+                        break
+                if ntc:
+                    attempted_locations.append(possible_location)
+                    #print(f"{sorted(attempted_locations + branches[index])}, {attempted_locations}, {branches}, {list(range(1,height-1))}")
+                    if set(attempted_locations + branches[side]) == set(range(1,height-1)):
+                        #print('end while')
+                        #input()
+                        ntb = True
+                        break
+                    while possible_location in attempted_locations:
+                        possible_location = random.randrange(1,height-1)
+                    continue
+                break
+            if ntb:
+                #print('break')
+                break
+            #branches[side][branch_index] = possible_location
+            branches[side].append(possible_location)
+
+    #Not including end curve
+    branch_length = int((width-5)/2)
+
+    #section_list will have top be index 0
+    section_list = [[], []]
+    for side in range(2):
+        for index in range(height):
+            if side:
+                if index in branches[side]:
+                    section_list[side].append(' ' + (' ' * branch_length) + '│')
+                elif index in [branch_location-1 for branch_location in branches[side]]:
+                    section_list[side].append('└' + ('─' * branch_length) + '╮')
+                elif index in [branch_location+1 for branch_location in branches[side]]:
+                    section_list[side].append('┌' + ('─' * branch_length) + '╯')
+                else:
+                    section_list[side].append('│' + (' ' * branch_length) + ' ')
+            else:
+                if index in branches[side]:
+                    section_list[side].append('│' + (' ' * branch_length) + ' ')
+                elif index in [branch_location-1 for branch_location in branches[side]]:
+                    section_list[side].append('╭' + ('─' * branch_length) + '┘')
+                elif index in [branch_location+1 for branch_location in branches[side]]:
+                    section_list[side].append('╰' + ('─' * branch_length) + '┐')
+                else:
+                    section_list[side].append(' ' + (' ' * branch_length) + '│')
+
+    plant_list = ['╭─╮']
+    for index in range(height):
+        plant_list.append('')
+        for side in range(2):
+            plant_list[index+1] += section_list[side][index]
+            if side == 0:
+                plant_list[index+1] += ' '
+
+    plant_list = Utilities.centerlist(plant_list, width)
+
+    #base
+
+    return plant_list
+
+/Function createplant attempt two
+def createplant(height, width, dot_amount, branch_amount):
+    plant = [' ' * width] * height
+
+    for offset in range(1,3):
+        plant[height-offset] = Utilities.sir(plant[height-offset], int(width/2), '.')
+
+    dot_count = 2
+    while not dot_count >= dot_amount:
+        for section_index,vertical_section in enumerate(plant):
+            for pixel_index,pixel in enumerate(vertical_section):
+                if pixel == '.':
+                    nearby_pixels = 0
+                    if not pixel_index == 0:
+                        if vertical_section[pixel_index-1] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == width-1:
+                        if vertical_section[pixel_index+1] == '.':
+                            nearby_pixels += 1
+                    if not section_index == 0:
+                        if plant[section_index-1][pixel_index] == '.':
+                            nearby_pixels += 1
+                    if not section_index == height-1:
+                        if plant[section_index+1][pixel_index] == '.':
+                            nearby_pixels += 1
+                    nearby_pixels **= branch_amount
+                    if random.randrange(0,3*nearby_pixels) == 2:
+                        if not pixel_index == 0:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index-1,'.')
+                    if random.randrange(0,3*nearby_pixels) == 2:
+                        if not pixel_index == width-1:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index+1,'.')
+                    if random.randrange(0,2*nearby_pixels) == 1:
+                        if not section_index == 0:
+                            plant[section_index-1] = Utilities.sir(plant[section_index-1],pixel_index,'.')
+            plant[section_index] = vertical_section
+        dot_count = 0
+        for vertical_section in plant:
+            dot_count += vertical_section.count('.')
+        #print('\n'.join(plant))
+
+    return plant
+
+/Function createplant attempt three
+def createplant(height, width, dot_amount, branch_amount):
+    plant = [' ' * width] * height
+
+    for offset in range(1,3):
+        plant[height-offset] = Utilities.sir(plant[height-offset], int(width/2), '.')
+
+    dot_count = 2
+    while not dot_count >= dot_amount:
+        for section_index,vertical_section in enumerate(plant):
+            for pixel_index,pixel in enumerate(vertical_section):
+                if pixel == '.':
+                    nearby_pixels = 0
+                    if not pixel_index == 0:
+                        if vertical_section[pixel_index-1] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == width-1:
+                        if vertical_section[pixel_index+1] == '.':
+                            nearby_pixels += 1
+                    if not section_index == 0:
+                        if plant[section_index-1][pixel_index] == '.':
+                            nearby_pixels += 1
+                    if not section_index == height-1:
+                        if plant[section_index+1][pixel_index] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == 0 and not section_index == 0:
+                        if plant[section_index-1][pixel_index-1] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == 0 and not section_index == height-1:
+                        if plant[section_index+1][pixel_index-1] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == width-1 and not section_index == 0:
+                        if plant[section_index-1][pixel_index+1] == '.':
+                            nearby_pixels += 1
+                    if not pixel_index == width-1 and not section_index == height-1:
+                        if plant[section_index+1][pixel_index+1] == '.':
+                            nearby_pixels += 1
+                    #if nearby_pixels >= random.randint(1,9):
+                    #    nearby_pixels == 0
+                    nearby_pixels **= branch_amount
+                    if random.randrange(0,3*nearby_pixels) == 0:
+                        if not pixel_index == 0:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index-1,'.')
+                    if random.randrange(0,3*nearby_pixels) == 0:
+                        if not pixel_index == width-1:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index+1,'.')
+                    if random.randrange(0,5*nearby_pixels) == 0:
+                        if not section_index == 0:
+                            plant[section_index-1] = Utilities.sir(plant[section_index-1],pixel_index,'.')
+                    if random.randrange(0,10*nearby_pixels) == 0:
+                        if not section_index == height-1:
+                            plant[section_index+1] = Utilities.sir(plant[section_index+1],pixel_index,'.')
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == 0 and not section_index == 0:
+                            plant[section_index-1] = Utilities.sir(plant[section_index-1],pixel_index-1,'.')
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == 0 and not section_index == height-1:
+                            plant[section_index+1] = Utilities.sir(plant[section_index+1],pixel_index-1,'.')
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == width-1 and not section_index == 0:
+                            plant[section_index-1] = Utilities.sir(plant[section_index-1],pixel_index+1,'.')
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == width-1 and not section_index == height-1:
+                            plant[section_index+1] = Utilities.sir(plant[section_index+1],pixel_index+1,'.')
+            plant[section_index] = vertical_section
+        dot_count = 0
+        for vertical_section in plant:
+            dot_count += vertical_section.count('.')
+        print('\n'.join(plant))
+
+    #return plant
+
+/Old scattered code from Bamboo.createplant
+    section_list[side].append(' ' + (' ' * branch_length) + '│')
+    section_list[side].append('└' + ('─' * branch_length) + '╮')
+    section_list[side].append('┌' + ('─' * branch_length) + '╯')
+else:
+    section_list[side].append('│' + (' ' * branch_length) + ' ')
+else:
+    if index in branches[side]:
+        section_list[side].append('│' + (' ' * branch_length) + ' ')
+    elif index in [branch_location-1 for branch_location in branches[side]]:
+        section_list[side].append('╭' + ('─' * branch_length) + '┘')
+    elif index in [branch_location+1 for branch_location in branches[side]]:
+        section_list[side].append('╰' + ('─' * branch_length) + '┐')
+    else:
+        section_list[side].append(' ' + (' ' * branch_length) + '│')
+
+/Function deleteplant from Bamboo
+def deleteplant(plant_name=None, open=False):
+    if open:
+        Memory.memory.open()
+    if not plant_name:
+        plant_name = getcurrentplant()
+
+    Memory.mu.rfm(['plants',plant_name])
+
+    if open:
+        Memory.memory.close()
+
+/Old Commands.user function
+def user(arguments):
+    """
+    CONTINUE
+    Has to do with certain tasks related to user memory, such as setting the current user or getting the coordinates of the user.
+
+    arguments:
+    Set: sets the current user in active and stored memory
+    1: name of user
+    Get: gets certain specified information about a location
+    1: location, 2: name of information (address, coordinates)
+    Replace: exchanges information about a location for the new information provided by the user
+    1: location, 2: name of information ('all' uses the entirety of the location information), 3: new information
+    Delete: deletes all information about the specified location
+    1: location
+
+    *Opens memory.
+    """
+    if cal(arguments, 1):
+        return
+    if arguments[0] == 'set':
+        if cal(arguments, 2):
+            return
+        Memory.mu.setcurrentuser(arguments[1], True)
+        ci = arguments[1] + "→"
+    elif arguments[0] == 'get':
+        if cal(arguments, 3):
+            return
+        try:
+            location = Memory.mu.lfm(['locations',arguments[1]], True)
+        except:
+            error(arguments[1], "It is not a valid location in memory")
+            return
+            #use finally if close becomes necessary
+        try:
+            information = location[arguments[2]]
+        except:
+            error(arguments[2], "It is not a valid information key in memory")
+            return
+        print(information)
+        input("Press enter to continue.")
+        return
+    elif arguments[0] == 'replace':
+        if cal(arguments, 4):
+            return
+        Memory.memory.open()
+        try:
+            location = Memory.mu.lfm(['locations',arguments[1]])
+        except:
+            error(arguments[1], "It is not a valid location in memory")
+            Memory.memory.close()
+            return
+        try:
+            location[arguments[2]] = arguments[3]
+        except:
+            error(arguments[2], "It is not a valid information key in memory")
+            Memory.memory.close()
+            return
+        #No error should result from the following line as arguments[1] is already confirmed and this same set of information has been used above
+        Memory.mu.atm(['locations',arguments[1]],location)
+        Memory.memory.close()
+        return
+    elif arguments[0] == 'delete':
+        if cal(arguments, 2):
+            return
+        try:
+            Memory.mu.rfm(['locations',arguments[1]], True)
+        except:
+            error(arguments[1], "It is not a valid location in memory")
+            return
+            #use finally if close becmes necessary
+        return
+    else:
+        error(arguments[0], "It is not a valid sub-command")
+        return
+
+/Weather get sub-command
+Documentation:
+Get: gets the weather at the given location for daily or hourly at a given day/hour
+1: location name, 2: 0/daily or 1/hourly, 3: day/hour index (int)
+
+*Opens memory in some scenarios ('get').
+Code:
+elif arguments[0] == 'get':
+    if cal(arguments, 4):
+        return
+    if cwi(arguments, [3]):
+        return
+    if not arguments[2] in ['daily', 'hourly', '0', '1']:
+        error(arguments[2], "It is not 0/daily or 1/hourly")
+        return
+    elif arguments[2] == '0':
+        arguments[2] = 'daily'
+    elif arguments[2] == '1':
+        arguments[2] = 'hourly'
+    try:
+        specific_weather = Memory.mu.lfm(['locations',arguments[1],'weather',arguments[2]], True)
+    except:
+        error(arguments[1], "It is not a valid location in memory")
+        return
+        #use finally if close is necessary
+    try:
+        specific_weather = specific_weather[arguments[3]]
+    except:
+        error(arguments[3], "It is out of range of the available weather cache")
+        return
+    print(specific_weather)
+    if not terminal: input("Press enter to continue.")
+    return
+
+/Interesting fire function
+def fire(height, width, amount, branch_amount, starting_animation=False):
+    plant = [' ' * width] * height
+
+    #for offset in range(1,3):
+        #plant[height-offset] = Utilities.sir(plant[height-offset], int(width/2), '.')
+
+    plant[height - 1] = Utilities.sir(plant[height - 1], int(width / 2), '▓')
+
+    #plant[height - 1] = Utilities.sir(plant[height - 1], int(width / 2) - 1, '.')
+    #plant[height - 1] = Utilities.sir(plant[height - 1], int(width / 2) + 1, '.')
+
+    count = 0
+    symbol_list = ['▓', '▒', '░']
+
+    while not count == amount:
+        if count <= amount / 3:
+            symbol = '▓'
+        elif count <= 2 * amount / 3:
+            symbol = '▒'
+        else:
+            symbol = '░'
+        for section_index,vertical_section in enumerate(plant):
+            #input('new section')
+            for pixel_index,pixel in enumerate(vertical_section):
+                if pixel in symbol_list:
+                    #print('\n'.join(plant))
+                    #time.sleep(0.05)
+                    nearby_pixels = 0
+                    if not pixel_index == 0:
+                        if vertical_section[pixel_index-1] in symbol_list:
+                            nearby_pixels += 1
+                    if not pixel_index == width-1:
+                        if vertical_section[pixel_index+1] in symbol_list:
+                            nearby_pixels += 1
+                    if not section_index == 0:
+                        if plant[section_index-1][pixel_index] in symbol_list:
+                            nearby_pixels += 1
+                    if not section_index == height-1:
+                        if plant[section_index+1][pixel_index] in symbol_list:
+                            nearby_pixels += 1
+                    nearby_pixels **= branch_amount
+                    nearby_pixels = int(nearby_pixels)
+                    #if nearby_pixels == 0:
+                    #    nearby_pixels = 1
+                    nearby_pixels += 1
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == 0 and not vertical_section[pixel_index - 1] in symbol_list:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index-1,symbol)
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not pixel_index == width-1 and not vertical_section[pixel_index + 1] in symbol_list:
+                            vertical_section = Utilities.sir(vertical_section,pixel_index+1,symbol)
+                    if random.randrange(0,1*nearby_pixels) == 0:
+                        if not section_index == 0 and not plant[section_index - 1][pixel_index] in symbol_list:
+                            plant[section_index-1] = Utilities.sir(plant[section_index-1],pixel_index,symbol)
+
+                    if not section_index == 0:
+                        if plant[section_index][pixel_index] in symbol_list:
+                            if random.randrange(0,3) == 2:
+                                plant[section_index - 1] = Utilities.sir(plant[section_index - 1], pixel_index, '□')
+
+                        if plant[section_index][pixel_index] == '□':
+                            plant[section_index] == Utilities.sir(plant[section_index], pixel_index, ' ')
+                            plant[section_index - 1] = Utilities.sir(plant[section_index - 1], pixel_index, '□')
+
+            plant[section_index] = vertical_section
+        count += 1
+        if starting_animation:
+            print(''.join(plant)[:-1])
+            time.sleep(0.2)
+
+    if not starting_animation:
+        print(''.join(plant)[:-1])
+        time.sleep(0.2)
+    #return plant
+
+/Old addcodebit function from Codebit.py
+def addcodebit(name, open=False):
+    if open:
+        Memory.memory.open()
+    while True:
+        name = input('Codebit Name: ')
+        try:
+            Memory.mu.lfm(['codebits', name])
+        except:
+            break
+    Screen.inputscreen('Codebit')
+    code = askcode()
+    Memory.mu.atm(['codebits', name], code)
+    if open:
+        Memory.memory.close()
+
+/Delay command in Commands module
+def delay(arguments):
+    """
+    Changes the error delay time used in the 'error' function.
+
+    arguments:
+    0: int of the amount of seconds the user wants
+
+    *Accesses a global variable (that stores the error delay time).
+    """
+    global edt
+
+    calc = cal(arguments, 1)
+    if calc: return calc
+    cwic = cwi(arguments, [0])
+    if cwic: return cwic
+
+    edt = arguments[0]

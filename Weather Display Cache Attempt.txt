@@ -1,0 +1,208 @@
+def weatherdisplay(size=2, location_name=None):
+    '''
+    Size 0: Smallest, fills up 1/3 of half the screen. 1: Medium, fills up 1/2 of half of the screen, 2: Largest, fills up an entire half of the screen
+    Display Mode 0: Small displays focus on daily. 1: Small displays focus on hourly
+    '''
+
+    global display_mode
+
+    Memory.memory.open()
+    if not location_name:
+        location_name = getcurrentlocation()
+
+    timezone = gettimezone(location_name)
+    now = datetime.datetime.now(timezone)
+    current_hour = now.hour
+    current_day = now.day
+
+    #Store check time in memory and only do another outdated display check if it is another hour on another day
+    do_outdated_check = False
+
+    try:
+        last_check = Memory.mu.lfm(['lastweatheroutdatedcheck'])
+    except:
+        do_outdated_check = True
+    else:
+        if not last_check['day'] == current_day or not last_check['hour'] == current_hour:
+            do_outdated_check = True
+
+    #Check for outdated displays here and remove them
+    if do_outdated_check:
+        try:
+            locations = Memory.mu.lfm(['locations']).keys()
+            for location in locations:
+                display_memory = Memory.mu.lfm(['locations',location,'weatherdisplays'])
+                #one display memory
+                for key,odm in display_memory.items():
+                    if not odm['day'] == current_day  or not odm['hour'] == current_hour:
+                        del display_memory[key]
+                Memory.mu.atm(['locations',location,'weatherdisplays'], display_memory)
+        except:
+            pass
+        finally:
+            Memory.mu.atm(['lastweatheroutdatedcheck'], {'day': current_day, 'hour': current_hour})
+
+    #Retrieve any up to date by the hour and day displays cached in memory
+    try:
+        if size == 2:
+            display_to_convert = Memory.mu.lfm(['locations',location_name,'weatherdisplays',size])['display']
+        else:
+            display_to_convert = Memory.mu.lfm(['locations',location_name,'weatherdisplays',(size,display_mode)])['display']
+    except:
+        pass
+    else:
+        display = ''
+        for character in display_to_convert:
+            if character == '!':
+                display += '▓'
+            elif character == '@':
+                display += '▒'
+            elif character == '#':
+                display += '░'
+            elif character == '$':
+                display += '○'
+            elif character == '%':
+                display += '●'
+            elif character == '^':
+                display += '┌'
+            elif character == '&':
+                display += '─'
+            elif character == '*':
+                display += '┐'
+            elif character == '(':
+                display += '│'
+            elif character == ')':
+                display += '┘'
+            elif character == '_':
+                display += '└'
+            else:
+                display += character
+        return display
+
+    weather = getweathercache(location_name)
+    daily = weather['daily']
+    hourly = weather['hourly']
+
+    deleteoldweatherinformation()
+
+    while True:
+        try:
+            daily_weather_name_list = [Utilities.centerstring(daily[index]['name'], 15)[:15] for index in range(0,size+2)]
+            daily_weather_icon_list = [createicon(weather_name_icon_conversion[composeshortforecast(daily[index])]).box().gsplit() for index in range(0,size+2)]
+            daily_weather_information_list = [Utilities.conformtolistlength(Utilities.centerlist(Utilities.divideup(daily[index]['detailedForecast'], 13), 15), 9, 15, True) for index in range(0,size+2)]
+        except IndexError:
+            weather = getweather(location_name)
+            daily = weather['daily']
+            hourly = weather['hourly']
+        else:
+            break
+
+    display_left = ""
+
+    for name in daily_weather_name_list:
+        display_left += name
+
+    display_left += "/"
+
+    for index in range(0,7):
+        for icon_list in daily_weather_icon_list:
+            display_left += icon_list[index]
+        display_left += "/"
+
+    for index in range(0,9):
+        for information_list in daily_weather_information_list:
+            display_left += information_list[index]
+        display_left += "/"
+
+    display_left = display_left[:-1]
+
+    if size == 1 and not display_mode:
+        display_left = display_left.split("/")
+        display_left = Utilities.centerlist(display_left, 50)
+        return display_left
+    elif size == 0 and not display_mode:
+        display_left = display_left.split("/")
+        display_left = Utilities.centerlist(display_left, 33)
+        return display_left
+
+    if size == 0:
+        display_right = " Hour" + (" " * 8) + "Forecast /"
+    else:
+        display_right = " Hour" + (" " * 8) + "Forecast" + (" " * 8) + "Temperature /"
+
+    while True:
+        try:
+            if size == 0:
+                hour_list = [(" " * 7) + Utilities.centerstring(str((index+current_hour) % 24), 2) + "  " for index in range(0,16)]
+                hourly_weather_forecast_list = [Utilities.centerstringatindex(composeshortforecast(hourly[index]), 22, 10)[:22] for index in range(0,16)]
+            else:
+                hour_list = ["  " + Utilities.centerstring(str((index+current_hour) % 24), 2) + "  " for index in range(0,16)]
+                hourly_weather_forecast_list = [Utilities.centerstringatindex(composeshortforecast(hourly[index]), 25, 10)[:25] for index in range(0,16)]
+            hourly_weather_temperature_list = ["  " + Utilities.centerstring(str(hourly[index]['temperature']), 3) + "     " for index in range(0,16)]
+        except IndexError:
+            weather = getweather(location_name)
+            daily = weather['daily']
+            hourly = weather['hourly']
+        else:
+            break
+
+    for index in range(0,16):
+        display_right += hour_list[index]
+        display_right += hourly_weather_forecast_list[index]
+        if not size == 0:
+            display_right += hourly_weather_temperature_list[index]
+        display_right += "/"
+
+    if size == 1 and display_mode:
+        display_right = display_right.split("/")
+        display_right = Utilities.centerlist(display_right, 50)
+        return display_right
+    elif size == 0 and display_mode:
+        display_right = display_right.split("/")
+        display_right = Utilities.centerlist(display_right, 33)
+        return display_right
+
+    #Removing the last character ("/") or preventing it using an if statement in for 262 and for 287?
+
+    dispaly_right = display_right[:-1]
+
+    display = ""
+
+    for index in range(0,17):
+        display += display_left.split("/")[index]
+        display += display_right.split("/")[index]
+
+    display_to_store = ''
+    for character in display:
+        if character == '▓':
+            display_to_store += '!'
+        elif character == '▒':
+            display_to_store += '@'
+        elif character == '░':
+            display_to_store += '#'
+        elif character == '○':
+            display_to_store += '$'
+        elif character == '●':
+            display_to_store += '%'
+        elif character == '┌':
+            display_to_store += '^'
+        elif character == '─':
+            display_to_store += '&'
+        elif character == '┐':
+            display_to_store += '*'
+        elif character == '│':
+            display_to_store += '('
+        elif character == '┘':
+            display_to_store += ')'
+        elif character == '└':
+            display_to_store += '_'
+        else:
+            display_to_store += character
+
+    if size == 2:
+        Memory.mu.atm(['locations',location_name,'weatherdisplays',size], {'display':display_to_store, 'hour':current_hour, 'day':current_day})
+    else:
+        Memory.mu.atm(['locations',location_name,'weatherdisplays',(size, display_mode)], {'display':display_to_store, 'hour':current_hour, 'day':current_day})
+
+    Memory.memory.close()
+    return display

@@ -1,0 +1,11 @@
+Bamboo - When to water and more
+Code Dictionary - Dictionary of useful code tidbits
+Tasks - Set tasks that need to be done once and/or daily
+Notes - Random notes on anything
+Memory Test - Test with random numbers that need to be memorized
+Random Kanji - Display a random kanji every load in, possibly with more features like saving favorites that can be displayed in full screen (only a limited amount) with full information for passive studying
+Transfer - Transfer memory between computers
+Weather - Current daily and hourly weather
+Meditation - Breathing exercises
+Memory New Words - Finds new words using consonant sounds
+Backup - Copy the text file

@@ -1,0 +1,52 @@
+Welcome to the Multi-Use Nexus (MUN).
+
+Enter any command by itself into the regular terminal to get the parameters.
+Commands that do not require parameters are marked with a '*'.
+Those that do instead have a '-'.
+For help on the different command line arguments, use '-h' on initiation.
+Sub-commands are denoted by indentations.
+
+The commands are as follows:
+*help: Loads this page, with information on all commands available in the MUN.
+*end: Saves the screen and other information, then stops the program.
+*interrupt: Does -not- save, unlike 'end', but still stops the program.
+*login: Changes the current user.
+*restart: Restarts MUN.
+*save: Saves the current open applications and some application specific data.
+*load: Loads the windows last saved.
+-set: Sets an application to a specific window of an index from 0-3.
+-switch: Switches the applications at the specified windows of indices from 0-3.
+-location: Various commands related to the user's location.
+  set: Changes the current location for the current user.
+  list: Lists all locations in memory.
+-theme: Changes the color of the command line.
+  night: red text
+  code: green text
+  bright: bright white text
+  normal: default white text
+-cloud: General commands with the Cloud application.
+  mode: Switch between daily and hourly displays on the mini-windows.
+-memory: General commands that have to do with memory. For locations in memory, separate keys with underscores and signify integers with '~' for list indices.
+  length: Gives the current memory stored in bytes, for either all users or a specific one.
+  get: Gets the information stored in memory at the given location.
+  set: Replaces or sets the information in memory at a given location.
+  delete: Deletes the information in memory at a given location.
+  structure: Returns the structure of memory in the form of a dictionary.
+  move: Moves information from one memory location to another, with there being an option for deleting the original information.
+-user: Changes the current user.
+  rename: Renames the current user to the given name.
+  delete: Deletes the current user its stored information.
+  list: Lists all user names.
+-delay: Changes the delay in seconds that are given for the user to read errors.
+-bamboo: General commands to do with the Bamboo application.
+  set: Sets the current plant to the given input.
+  delete: Deletes the plant that corresponds to the plant name given.
+  water: Refills the water level meter of whichever plant name given.
+  regenerate: Recreates the visual for the specified plant.
+  list: Lists all plant names that are stored in memory.
+-say: Repeats the given input (quotation marks optional).
+-fire: Displays a fire animation with smoke or a full fireplace if the user wants.
+-codebit: Different sub-commands that work with saving small sections of code from different languages, not necessarily for random notes.
+  create: Opens a menu where the user can type or paste code for it to be saved.
+  pull: Displays the code saved at that specific location.
+  copy: Copies the code saved at the specific location to the user's clipboard (Windows).

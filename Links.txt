@@ -1,0 +1,173 @@
+/Get coordinates
+"https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=3121+N+Swan+Rd%2C+Tucson%2C+AZ+85712&benchmark=Public_AR_Census2010&format=json"
+/Get weather link
+"https://api.weather.gov/points/32.2651,-110.8923"
+/Get weather
+'https://api.weather.gov/gridpoints/TWC/93,50/forecast/hourly'
+/Possibly helpful code on receiving weather data
+https://stackoverflow.com/questions/18828890/how-to-use-the-noaa-api-to-query-past-weather-data-for-a-given-set-of-coordinate
+/Weather web api info
+https://www.weather.gov/documentation/services-web-api
+/Weather web api FAQs
+https://weather-gov.github.io/api/general-faqs
+/Geocoding api
+https://geocoding.geo.census.gov/geocoder/Geocoding_Services_API.html
+/Low-level web interface, urllib
+https://docs.python.org/3/library/urllib.request.html?highlight=requests
+
+/Commas in HTML
+https://stackoverflow.com/questions/22057083/difference-between-20-and-2-in-url
+
+/Request pypi
+https://pypi.org/project/requests/
+/Request documentation
+https://requests.readthedocs.io/en/master/
+/User agent
+https://stackoverflow.com/questions/10606133/sending-user-agent-using-requests-library-in-python
+
+/OS shell and Python
+https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
+/Subprocess
+https://docs.python.org/3/library/subprocess.html
+/File not found
+https://stackoverflow.com/questions/47847084/python-filenotfounderror-on-all-subprocess-calls
+/Avoiding shell
+https://stackoverflow.com/questions/48100820/how-to-avoid-shell-true-in-subprocess
+/Using shell
+https://stackoverflow.com/questions/13491392/why-not-just-use-shell-true-in-subprocess-popen-in-python
+/OS python
+https://docs.python.org/3/library/os.html
+/Shell security
+https://security.stackexchange.com/questions/162938/security-implications-of-suprocess-executing-with-a-active-shell-vs-no-shell
+/Set console width and height python
+https://stackoverflow.com/questions/13175175/set-console-width-windows-python
+
+/Using Python socket
+https://stackoverflow.com/questions/11352855/communication-between-two-computers-using-python-socket
+/Python socket documentation
+https://docs.python.org/3/library/socket.html
+
+/Python built-in types
+https://docs.python.org/3/library/stdtypes.html
+/Python built-in functions
+https://docs.python.org/3/library/functions.html
+/Python random
+https://docs.python.org/3/library/random.html
+/Python compound statements
+https://docs.python.org/3/reference/compound_stmts.html#with
+/Python IO
+https://docs.python.org/3/library/io.html
+/Python sleep info
+https://stackoverflow.com/questions/510348/how-can-i-make-a-time-delay-in-python
+/Python time (includes sleep)
+https://docs.python.org/3/library/time.html
+/Python operator
+https://docs.python.org/3/library/operator.html
+/Python functools (including reduce)
+https://docs.python.org/3/library/functools.html
+/Python copy
+https://docs.python.org/3/library/copy.html
+/Python errors
+https://docs.python.org/3/tutorial/errors.html
+/Python datetime
+https://docs.python.org/3/library/datetime.html
+/Python module index
+https://docs.python.org/3/py-modindex.html
+/Python importlib and reload
+https://docs.python.org/3/library/importlib.html#importlib.reload
+
+/Traversing nested dictionaries
+https://stackoverflow.com/questions/20324830/any-functional-programming-method-of-traversing-a-nested-dictionary
+/Changing values in nested dictionaries
+https://stackoverflow.com/questions/11918852/change-values-in-dict-of-nested-dicts-using-items-in-a-list
+
+/Python global variables in functions
+https://stackoverflow.com/questions/423379/using-global-variables-in-a-function
+/Python changing one character in a string
+https://stackoverflow.com/questions/1228299/changing-one-character-in-a-string-in-python/22149018#22149018
+/Python avoiding repeating code
+https://stackoverflow.com/questions/11149997/avoiding-repeat-of-code-after-loop
+/String to dictionary
+https://stackoverflow.com/questions/17610732/error-dictionary-update-sequence-element-0-has-length-1-2-is-required-on-dj
+/Convert a string to a function using dictionary
+https://stackoverflow.com/questions/7719466/how-to-convert-a-string-to-a-function-name-in-python
+/Convert a string to a function using globals()
+https://stackoverflow.com/questions/22021037/convert-string-into-a-function-call/22021058#22021058
+
+/Unicode characters Wikipedia
+https://en.wikipedia.org/wiki/List_of_Unicode_characters#Mathematical_symbols
+/Timezone database Wikipedia
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+/Python file reading introduction
+https://stackoverflow.com/questions/46740336/python-3-6-printing-out-the-text-in-a-txt-file
+/Python input output
+https://docs.python.org/3/tutorial/inputoutput.html
+
+/Python names and values
+https://www.youtube.com/watch?v=_AEJHKGk9ns
+/Python modules information
+https://docs.python.org/3/tutorial/modules.html
+/Python using mutation versus using return
+https://stackoverflow.com/questions/26027694/correct-style-for-python-functions-that-mutate-the-argument
+/Python "string comprehension"
+https://stackoverflow.com/questions/16302209/python-string-from-list-comprehension
+/Function annotations and more
+https://docs.python.org/3/tutorial/controlflow.html#function-annotations
+/Errors and try/except
+https://docs.python.org/3/tutorial/errors.html
+
+/Python color
+https://stackoverflow.com/questions/287871/how-to-print-colored-text-in-terminal-in-python
+/Commands and pip
+https://pip.pypa.io/en/stable/installing/
+/Colorama pip
+https://pypi.org/project/colorama/
+/Installing packages
+https://packaging.python.org/tutorials/installing-packages/
+
+/Docstrings
+https://www.python.org/dev/peps/pep-0257/
+/Use of function annotations
+https://stackoverflow.com/questions/3038033/what-are-good-uses-for-python3s-function-annotations
+/General function definitions
+https://docs.python.org/3/reference/compound_stmts.html#function-definitions
+/How to use function annotations
+https://www.python.org/dev/peps/pep-3107/
+
+/General pep-8 guide
+https://www.python.org/dev/peps/pep-0008/
+/General glossary
+https://docs.python.org/3/glossary.html
+/Python decorators
+https://en.wikipedia.org/wiki/Python_syntax_and_semantics#Decorators
+/Argparse Python
+https://docs.python.org/3/library/argparse.html
+/Argparse tutorial
+https://docs.python.org/3/howto/argparse.html#id1
+
+/Python json documentation
+https://docs.python.org/3/library/json.html#module-json
+/Python json vs pickle
+https://stackoverflow.com/questions/6794454/json-vs-pickle-security
+
+/Interrupt while look with key press
+https://stackoverflow.com/questions/13180941/how-to-kill-a-while-loop-with-a-keystroke
+/Cursor position
+https://stackoverflow.com/questions/3698635/getting-cursor-position-in-python
+
+/EFF word list article
+https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
+/EFF long word list
+https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
+/Diceware Wikipedia
+https://en.wikipedia.org/wiki/Diceware
+/Secrets python module
+https://docs.python.org/3/library/secrets.html#module-secrets
+
+/Import best practices
+https://stackoverflow.com/questions/1744258/is-import-module-better-coding-style-than-from-module-import-function
+/Print without ending new line
+https://stackoverflow.com/questions/493386/how-to-print-without-newline-or-space
+/Clipboard with command line
+https://stackoverflow.com/questions/17819814/how-can-you-get-the-clipboard-contents-with-a-windows-command
